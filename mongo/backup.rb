@@ -17,7 +17,6 @@ end
 
 # Return position of the oldest archive (to delete)
 def get_older_file(list)
-  debugger
   tmp = Time.now
   name = ''
 
