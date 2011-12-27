@@ -52,7 +52,7 @@ puts "MongoDB Backup started !"
 puts "----> Dumping data"
 puts "      Creating dump directory #{dump_dir}"
 puts "      Running mongodump..."
-%x[mkdir -p #{dump_dir}; cd #{dump_dir}; mongodump >/dev/null]
+%x[mkdir -p #{dump_dir}; cd #{dump_dir}; mongodump --oplog >/dev/null]
 
 # Get object list from our bucket
 puts "----> Getting object list"
