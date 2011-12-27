@@ -52,6 +52,10 @@ puts "Extracting MongoDB Backup started !"
 # Get object list from our bucket
 puts "----> Getting object list"
 list = AWS::S3::Bucket.objects(BACKUP_BUCKET)
+if list.length == 0
+  puts "Bucket is empty. Exiting..."
+  exit 0
+end
 key_list = list.map { |x| x.key() }
 
 puts "----> Searching latest backup"
