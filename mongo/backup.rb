@@ -17,6 +17,7 @@ end
 
 # Return position of the oldest archive (to delete)
 def get_older_file(list)
+  debugger
   tmp = Time.now
   name = ''
 
@@ -56,11 +57,12 @@ puts "      Running mongodump..."
 # Get object list from our bucket
 puts "----> Getting object list"
 list = AWS::S3::Bucket.objects(BACKUP_BUCKET)
+key_list = list.map { |x| x.key() }
 
 # Delete oldest object if we have to many backups
 if list.length >= BACKUP_NB
   puts "----> Deleting oldest backup"
-  AWS::S3::S3Object.delete(list[get_older_file(list)], BACKUP_BUCKET)
+  AWS::S3::S3Object.delete(key_list[get_older_file(key_list)], BACKUP_BUCKET)
 end
 
 # Go to the dump directory, make the tarball and upload it
