@@ -9,10 +9,9 @@ require 'yaml'
 BACKUP_NB = 100
 MONGODUMP_OPTIONS = ARGV[0] ? ARGV[0] : ''
 
-# String format is dump-YYYY-MM-DD_HH:MM:SS.tar.gz
+# String format is dump-YYYY-MM-DD.tar.gz
 def get_time_object(str)
-  obj = Time.new(str[5..8].to_i, str[10..11].to_i, str[13..14].to_i,
-                 str[16..17].to_i, str[19..20].to_i, str[22..23].to_i)
+  obj = Time.new(str[5..8].to_i, str[10..11].to_i, str[13..14].to_i)
   obj
 end
 
@@ -68,8 +67,7 @@ end
 # Go to the dump directory, make the tarball and upload it
 Dir.chdir(dump_dir) do
   puts "----> Save backup to S3"
-  tarball = "dump-#{Time.now.to_s[0..-7]}.tar.gz"
-  tarball.gsub!(' ', '_')
+  tarball = "dump-#{Time.now.to_s[0..-16]}.tar.gz"
   puts "      Creating tarball `#{tarball}'"
   %x[tar -cf #{tarball} dump]
   puts "      Storing tarball to bucket `#{BACKUP_BUCKET}'"

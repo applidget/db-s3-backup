@@ -10,10 +10,9 @@ require 'yaml'
 # or AMAZON_S3_PATH must be set in the environment
 #
 
-# String format is dump-YYYY-MM-DD_HH:MM:SS.tar.gz
+# String format is dump-YYYY-MM-DD.tar.gz
 def get_time_object(str)
-  obj = Time.new(str[5..8].to_i, str[10..11].to_i, str[13..14].to_i,
-                 str[16..17].to_i, str[19..20].to_i, str[22..23].to_i)
+  obj = Time.new(str[5..8].to_i, str[10..11].to_i, str[13..14].to_i)
   obj
 end
 
