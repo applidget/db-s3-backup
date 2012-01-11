@@ -7,6 +7,7 @@ require 'yaml'
 # or AMAZON_S3_PATH must be set in the environment
 #
 BACKUP_NB = 100
+MONGODUMP_OPTIONS = ARGV[0] ? ARGV[0] : ''
 
 # String format is dump-YYYY-MM-DD_HH:MM:SS.tar.gz
 def get_time_object(str)
@@ -51,7 +52,7 @@ puts "MongoDB Backup started !"
 puts "----> Dumping data"
 puts "      Creating dump directory #{dump_dir}"
 puts "      Running mongodump..."
-%x[mkdir -p #{dump_dir}; cd #{dump_dir}; mongodump --oplog >/dev/null]
+%x[mkdir -p #{dump_dir}; cd #{dump_dir}; mongodump #{MONGODUMP_OPTIONS} >/dev/null]
 
 # Get object list from our bucket
 puts "----> Getting object list"
