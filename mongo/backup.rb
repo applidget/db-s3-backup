@@ -51,7 +51,7 @@ dump_dir = S3_CONFIG['dump_directory']
 puts "MongoDB Backup started !"
 puts "----> Dumping data"
 puts "      Creating dump directory #{dump_dir}"
-puts "      Running mongodump..."
+puts "      Running mongodump #{MONGODUMP_OPTIONS}"
 %x[mkdir -p #{dump_dir}; cd #{dump_dir}; mongodump #{MONGODUMP_OPTIONS} >/dev/null]
 
 # Get object list from our bucket
