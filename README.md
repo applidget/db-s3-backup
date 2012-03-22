@@ -20,8 +20,6 @@ Using in a crontab would look the following for example:
     
 Where `.env_vars` is just a script exporting the appropriate environments variables that are:
 
-- `AMAZON_ACCESS_KEY`: you amazon aws access key
-- `AMAZON_SECRET_KEY`: you amazon aws secret key
 - `MONGOADMIN`: you amazon aws secret key
 - `MONGOPWD`: you amazon aws secret key
 
