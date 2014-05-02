@@ -1,4 +1,4 @@
-require 'aws/s3'
+require 'aws-sdk'
 require 'yaml'
 
 # Store mongodump objects to amazon s3. Database must be used as a replica set
@@ -35,16 +35,17 @@ end
 s3_path = ENV['AMAZON_S3_PATH'] || ENV['HOME'] + '/amazon_s3.yml'
 S3_CONFIG = YAML.load_file(s3_path)
 
-# Fix to make aws/s3 works with european buckets
-AWS::S3::DEFAULT_HOST.replace "s3-eu-west-1.amazonaws.com"
-AWS::S3::Base.establish_connection!(
-    :access_key_id     => S3_CONFIG['access_key_id'],
-    :secret_access_key => S3_CONFIG['secret_access_key']
-  )
+
+s3 = AWS::S3.new(
+  :access_key_id => S3_CONFIG['access_key_id'],
+  :secret_access_key => S3_CONFIG['secret_access_key'])
+
 
 # Get s3 backup bucket and dump directory
 BACKUP_BUCKET = S3_CONFIG['backup_bucket']
 dump_dir = S3_CONFIG['dump_directory']
+
+bucket = s3.buckets[BACKUP_BUCKET]
 
 # Create dump directory
 puts "MongoDB Backup started !"
@@ -55,13 +56,13 @@ puts "      Running mongodump #{MONGODUMP_OPTIONS}"
 
 # Get object list from our bucket
 puts "----> Getting object list"
-list = AWS::S3::Bucket.objects(BACKUP_BUCKET)
+list = bucket.objects()
 key_list = list.map { |x| x.key() }
 
 # Delete oldest object if we have to many backups
-if list.length >= BACKUP_NB
+if list.to_a.length >= BACKUP_NB
   puts "----> Deleting oldest backup"
-  AWS::S3::S3Object.delete(key_list[get_older_file(key_list)], BACKUP_BUCKET)
+  bucket.objects[key_list[get_older_file(key_list)]].delete()
 end
 
 # Go to the dump directory, make the tarball and upload it
@@ -71,8 +72,8 @@ Dir.chdir(dump_dir) do
   puts "      Creating tarball `#{tarball}'"
   %x[tar -cf #{tarball} dump]
   puts "      Storing tarball to bucket `#{BACKUP_BUCKET}'"
-  AWS::S3::S3Object.write(:data => File.open(tarball), :content_length => File.size(tarball))
-  #AWS::S3::S3Object.store(tarball, open(tarball), BACKUP_BUCKET)
+  key = File.basename(tarball)
+  bucket.objects[key].write(:file => tarball)
 end
 
 # Delete dump directory we just created

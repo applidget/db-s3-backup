@@ -1,16 +1,18 @@
 GEM
   remote: http://rubygems.org/
   specs:
-    aws-s3 (0.6.2)
-      builder
-      mime-types
-      xml-simple
-    builder (3.0.0)
-    mime-types (1.17.2)
-    xml-simple (1.1.1)
+    aws-sdk (1.11.1)
+      json (~> 1.4)
+      nokogiri (>= 1.4.4)
+      uuidtools (~> 2.1)
+    json (1.8.1)
+    mini_portile (0.5.2)
+    nokogiri (1.6.0)
+      mini_portile (~> 0.5.0)
+    uuidtools (2.1.4)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  aws-s3
+  aws-sdk
