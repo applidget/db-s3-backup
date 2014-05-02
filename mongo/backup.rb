@@ -71,7 +71,8 @@ Dir.chdir(dump_dir) do
   puts "      Creating tarball `#{tarball}'"
   %x[tar -cf #{tarball} dump]
   puts "      Storing tarball to bucket `#{BACKUP_BUCKET}'"
-  AWS::S3::S3Object.store(tarball, open(tarball), BACKUP_BUCKET)
+  AWS::S3::S3Object.write(:data => File.open(tarball), :content_length => File.size(tarball))
+  #AWS::S3::S3Object.store(tarball, open(tarball), BACKUP_BUCKET)
 end
 
 # Delete dump directory we just created
