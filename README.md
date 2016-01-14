@@ -23,4 +23,13 @@ Where `.env_vars` is just a script exporting the appropriate environments variab
 - `MONGOADMIN`: you amazon aws secret key
 - `MONGOPWD`: you amazon aws secret key
 
+## Bash version
 
+The bash version is forked from: https://github.com/applidget/mongodb-s3-backup
+
+Usage:
+
+bash backup.sh -u <mongo_user> -p <mongo_passwd> -k <aws_access_key> -s <aws_secret_key> -r <bucket_region> -b <bucket_name> -d <working_dir> -m <mongo_host>
+
+Advantage: dependency free, should work on all basic setup
+Disadvantage: do not cleanup old backup at all
