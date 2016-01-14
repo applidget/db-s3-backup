@@ -87,6 +87,8 @@ DATE=$(date -u "+%F-%H%M%S")
 FILE_NAME="$MONGOD_HOST-backup-$DATE"
 ARCHIVE_NAME="$FILE_NAME.tar.gz"
 
+echo "Starting dump on $DATE"
+
 # Dump the database
 echo "Dumping $MONGOD_HOST in $DUMP_DIR/backup/$FILE_NAME"
 mongodump -h "$MONGOD_HOST" --username "$MONGODB_USER" --password "$MONGODB_PASSWORD" --out $DUMP_DIR/backup/$FILE_NAME > /dev/null
